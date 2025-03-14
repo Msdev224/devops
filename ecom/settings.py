@@ -200,12 +200,12 @@ UNFOLD = {
                     'icon': 'people',
                     'link': reverse_lazy('admin:accounts_account_changelist'),
                 },
-                # # Category app
-                # {
-                #     'title': _('Categories'),
-                #     'icon': 'category',
-                #     'link': reverse_lazy('admin:category_category_changelist'),
-                # },
+                # Category app
+                {
+                    'title': _('Categories'),
+                    'icon': 'category',
+                    'link': reverse_lazy('admin:category_category_changelist'),
+                },
                 
                 
             ],
