@@ -216,57 +216,57 @@ UNFOLD = {
                 
             ],
         },
-        # # Store app
-        # {
-        #     'title': _('Products'),
-        #     'icon': 'inventory_2',
-        #     'link': "#", 
-        #     "items": [
-        #         {
-        #             'title': _('Products'),
-        #             'icon': 'inventory_2',
-        #             'link': reverse_lazy('admin:store_product_changelist'),
-        #         },
-        #         {
-        #             'title': _('Variations'),
-        #             'icon': 'inventory_2',
-        #             'link': reverse_lazy('admin:store_variation_changelist'),
-        #         },
-        #     ] # Une valeur est nécessaire pour 'link' avec Unfold
+        # Store app
+        {
+            'title': _('Products'),
+            'icon': 'inventory_2',
+            'link': "#", 
+            "items": [
+                {
+                    'title': _('Products'),
+                    'icon': 'inventory_2',
+                    'link': reverse_lazy('admin:store_product_changelist'),
+                },
+                {
+                    'title': _('Variations'),
+                    'icon': 'inventory_2',
+                    'link': reverse_lazy('admin:store_variation_changelist'),
+                },
+            ] # Une valeur est nécessaire pour 'link' avec Unfold
             
-        # },
+        },
         # Carts app - Configuration pour Unfold
-        # {
-        #     'title': _('Shopping'),
-        #     # 'icon': 'shopping_cart',
-        #     'link': '#',  # Une valeur est nécessaire pour 'link' avec Unfold
-        #     'items': [  # Utiliser 'items' pour les sous-menus dans Unfold
-        #         {
-        #             "title": _("Cart"),
-        #             "icon": "shopping_cart", 
-        #             'link': reverse_lazy('admin:carts_cart_changelist'),
-        #         },
-        #         {
-        #             'title': _('Cart Items'),
-        #             "icon": "shopping_bag",
-        #             'link': reverse_lazy('admin:carts_cartitem_changelist'),
-        #         },
-        #     ]
-        # },
+        {
+            'title': _('Shopping'),
+            # 'icon': 'shopping_cart',
+            'link': '#',  # Une valeur est nécessaire pour 'link' avec Unfold
+            'items': [  # Utiliser 'items' pour les sous-menus dans Unfold
+                {
+                    "title": _("Cart"),
+                    "icon": "shopping_cart", 
+                    'link': reverse_lazy('admin:carts_cart_changelist'),
+                },
+                {
+                    'title': _('Cart Items'),
+                    "icon": "shopping_bag",
+                    'link': reverse_lazy('admin:carts_cartitem_changelist'),
+                },
+            ]
+        },
         # Section pour les configurations et paramètres
-        # {
-        #     "title": _("Settings"),
-        #     "separator": True,
-        #     "collapse": True,
-        #     "permissions": lambda request: request.user.is_superuser,
-        #     "items": [
-        #         {
-        #             'title': _('User Groups'),
-        #             'icon': 'group',
-        #             'link': reverse_lazy('admin:auth_group_changelist'),
-        #         },
-        #     ],
-        # },
+        {
+            "title": _("Settings"),
+            "separator": True,
+            "collapse": True,
+            "permissions": lambda request: request.user.is_superuser,
+            "items": [
+                {
+                    'title': _('User Groups'),
+                    'icon': 'group',
+                    'link': reverse_lazy('admin:auth_group_changelist'),
+                },
+            ],
+        },
     ],
 },
 
