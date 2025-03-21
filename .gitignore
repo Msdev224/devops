@@ -45,3 +45,9 @@ ENV/
 .vscode/
 *.swp
 *.swo
+
+echo "__pycache__" > .gitignore
+echo "*.pyc" >> .gitignore
+echo "db.sqlite3" >> .gitignore
+echo "*.log" >> .gitignore
+echo "ngrok_url.txt" >> .gitignore

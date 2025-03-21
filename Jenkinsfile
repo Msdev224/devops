@@ -22,6 +22,14 @@ pipeline {
                 sh 'docker-compose up -d --build'
             }
         }
+        stage('Expose with Ngrok') {
+            steps {
+                sh 'curl -sL https://ngrok.com/install | bash -s -- ngrok'  
+                sh './ngrok http 8000 & sleep 5' 
+                sh 'curl -s http://localhost:4040/api/tunnels | jq -r .tunnels[0].public_url > ngrok_url.txt'  
+                sh 'cat ngrok_url.txt'  
+            }
+        }
     }
     post {
         always {
