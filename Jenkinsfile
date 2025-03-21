@@ -1,46 +1,81 @@
 pipeline {
-    
-    agent {
-        docker {
-            image 'docker:dind'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
+    agent any
+    environment {
+        VENV_DIR = 'venv'
     }
-
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/Msdev224/devops.git', branch: 'main'
+                git branch: 'main', url: 'https://github.com/RVICTOIRE/test_devops.git'
             }
         }
-        stage('Build Docker Image') {
+        stage('Validate Environment') {
             steps {
-                sh 'docker build -t my-django-app:latest .'
+                script {
+                    try {
+                        sh 'git --version'
+                        sh 'python3 --version'
+                        sh 'pip3 --version'
+                    } catch (err) {
+                        echo "Erreur lors de la validation de l'environnement : ${err}"
+                        currentBuild.result = 'FAILURE'
+                        error("Échec de la validation de l'environnement")
+                    }
+                }
             }
         }
-        stage('Run Tests') {
+        stage('Debug Git') {
             steps {
-                sh 'docker run my-django-app:latest python manage.py test'
+                sh 'git config --list'
+                sh 'git remote -v'
             }
         }
-        stage('Deploy') {
+        stage('Setup') {
             steps {
-                sh 'docker-compose down'
-                sh 'docker-compose up -d --build'
+                script {
+                    try {
+                        sh '''
+                            python3 -m venv venv
+                            . venv/bin/activate
+                            pip install --upgrade pip
+                            pip install -r requirements.txt
+                        '''
+                    } catch (err) {
+                        echo "Erreur lors de la configuration de l'environnement : ${err}"
+                        currentBuild.result = 'FAILURE'
+                        error("Échec de la configuration de l'environnement")
+                    }
+                }
             }
         }
-        stage('Expose with Ngrok') {
+        stage('Run Script') {
             steps {
-                sh 'curl -sL https://ngrok.com/install | bash -s -- ngrok'  
-                sh './ngrok http 8000 & sleep 5' 
-                sh 'curl -s http://localhost:4040/api/tunnels | jq -r .tunnels[0].public_url > ngrok_url.txt'  
-                sh 'cat ngrok_url.txt'  
+                script {
+                    try {
+                        sh '''
+                            . venv/bin/activate
+                            python app.py
+                        '''
+                    } catch (err) {
+                        echo "Erreur lors de l'exécution du script : ${err}"
+                        currentBuild.result = 'FAILURE'
+                        error("Échec de l'exécution du script")
+                    }
+                }
             }
         }
     }
     post {
         always {
-            sh 'docker-compose down || true'
+            script {
+                def result = currentBuild.result ?: 'SUCCESS'
+                emailext subject: "Jenkins Build: ${result}",
+                    body: "Build Status: ${result}\nVoir Jenkins: ${env.BUILD_URL}",
+                    to: 'Rabysene17@gmail.com',
+                    attachLog: true
+            }
+        
+            sh 'rm -rf venv'
         }
     }
 }
